@@ -1,0 +1,87 @@
+---
+title: "Census Mapping"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+
+
+##Loading in the Choroplethr and choroplethrMaps packages to render maps of the Census data
+```{r}
+library(choroplethr)
+library(choroplethrMaps)
+```
+
+
+##constructing a map of US states by population
+###The state_chropleth function can map any data as long as the function is fed a data frame with two columns with a col named region and a col named value
+```{r}
+state_choropleth(df_pop_state)
+```
+
+
+##Customizing the state choropleth map
+###Adding a title and legend to the map 
+```{r}
+state_choropleth(df_pop_state,
+    title = "2012 State Population Estimates",
+    legend = "Population")
+```
+
+
+##Creating the same map with a different number of colors
+###Looks like choropleth can only handle up to 9 colors
+```{r}
+state_choropleth(df_pop_state, num_colors = 9)
+```
+ 
+ 
+##Creating a map on a continious scale where outliers will stick out 
+### This can be done by setting the number of colors to 1
+```{r}
+state_choropleth(df_pop_state, num_colors = 1)
+```
+ 
+ 
+ 
+## Creating a zoomed in map
+### You must choose the individual states that you want to use for the visualization
+```{r}
+state_choropleth(df_pop_state,
+                 zoom = c("california", "oregon", "washington"))
+```
+ 
+
+##Superimpose a choropleth map over a reference map
+### Looks like you need a google api key for this
+```{r}
+#state_choropleth(df_pop_state,
+#                 num_colors = 1,
+#                 zoom = c("california", "oregon", "washington"),
+#                 reference_map = TRUE)
+```
+ 
+ 
