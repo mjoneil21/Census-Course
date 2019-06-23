@@ -39,6 +39,7 @@ library(choroplethrMaps)
 ##constructing a map of US states by population
 ###The state_chropleth function can map any data as long as the function is fed a data frame with two columns with a col named region and a col named value
 ```{r}
+data("df_pop_state")
 state_choropleth(df_pop_state)
 ```
 
@@ -82,6 +83,41 @@ state_choropleth(df_pop_state,
 #                 num_colors = 1,
 #                 zoom = c("california", "oregon", "washington"),
 #                 reference_map = TRUE)
+```
+ 
+ 
+ 
+##Loading in state demographics data
+###opening up the dataframe in the viewer
+```{r}
+data(df_state_demographics)
+View(df_state_demographics)
+```
+ 
+ 
+ 
+##Creating the value column needed to map the data into the choropleth function 
+```{r}
+df_state_demographics$value =
+  df_state_demographics$per_capita_income
+```
+ 
+ 
+ 
+ 
+##Mapping the Per Capita Income Estimates 
+```{r}
+state_choropleth(df_state_demographics,
+                 num_colors = 2,
+                 title = "2013 State Per Capita Income Estimates",
+                 legend = "Dollars")
+```
+ 
+ 
+ 
+ 
+```{r}
+
 ```
  
  
