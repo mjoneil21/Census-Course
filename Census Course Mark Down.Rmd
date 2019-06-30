@@ -169,14 +169,59 @@ state_choropleth(df_change,
 ```
  
  
- 
+##Looking at the get state demographics function 
 ```{r}
-
+get_state_demographics #
+```
+ 
+##Table for per capita income ending in 2015 spanning 5 years
+```{r}
+get_acs_data("B19301",
+             "state",
+             endyear = 2015,
+             span = 5)
 ```
  
  
- 
- 
+```{r}
+df_income = get_acs_data("B19301", "state")[[1]]
+state_choropleth(df_income)
+```
+
+
+##same table including margin of error (90% confidence that the true per capita income is between estimated value + or - margin of error)
+```{r}
+get_acs_data("B19301",
+             "state",
+             endyear = 2015,
+             span = 5,
+             include_moe = TRUE)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
  
  
  
