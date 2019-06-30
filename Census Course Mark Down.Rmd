@@ -76,18 +76,10 @@ state_choropleth(df_pop_state,
 ```
  
 
-##Superimpose a choropleth map over a reference map
-### Looks like you need a google api key for this
-```{r}
-#state_choropleth(df_pop_state,
-#                 num_colors = 1,
-#                 zoom = c("california", "oregon", "washington"),
-#                 reference_map = TRUE)
-```
+
  
  
- 
-##Loading in state demographics data
+###Loading in state demographics data
 ###opening up the dataframe in the viewer
 ```{r}
 data(df_state_demographics)
@@ -96,7 +88,7 @@ View(df_state_demographics)
  
  
  
-##Creating the value column needed to map the data into the choropleth function 
+###Creating the value column needed to map the data into the choropleth function 
 ```{r}
 df_state_demographics$value =
   df_state_demographics$per_capita_income
@@ -104,7 +96,7 @@ df_state_demographics$value =
  
  
  
-##Mapping the Per Capita Income Estimates 
+###Mapping the Per Capita Income Estimates 
 ```{r}
 state_choropleth(df_state_demographics,
                  num_colors = 2,
@@ -114,20 +106,20 @@ state_choropleth(df_state_demographics,
  
  
  
-##Using the Census Bureau's API key to fetch data 
+###Using the Census Bureau's API key to fetch data 
 ```{r}
 df_2010 = get_state_demographics(2010)
 View(df_2010)
 ```
  
  
-##Creating a Map out of the data we fetched from the Census Bureau (2010 data) 
+###Creating a Map out of the data we fetched from the Census Bureau (2010 data) 
 ```{r}
 df_2010$value = df_2010$per_capita_income
 state_choropleth(df_2010)
 ```
 
-##Creating a map of 2015 state demographics
+###Creating a map of 2015 state demographics
 ```{r}
 df_2015 = get_state_demographics(2015)
 df_2015$value = df_2015$per_capita_income
@@ -135,14 +127,14 @@ df_2015$value = df_2015$per_capita_income
 state_choropleth(df_2015)
 ```
 
-##Creating a percent change data frame
+###Creating a percent change data frame
 ```{r}
 df_change = calculate_percent_change(df_2010, df_2015)
 
 View(df_change)
 ```
  
-##Removing unnecessary columns from the percent change data frame 
+###Removing unnecessary columns from the percent change data frame 
 ```{r}
 df_change = df_change[, c("region", "value.x","value.y","value")]
 
@@ -150,17 +142,17 @@ View(df_change)
 ```
  
  
-##plotting %change 
+###plotting  percent change of per capita income 
 ```{r}
 state_choropleth(df_change)
 ```
  
-divergent scale for %change 
+###divergent scale for %change 
 ```{r}
 state_choropleth(df_change, num_colors = 0)
 ```
  
- 
+###Plotting percent change in estimated per-capita income across states 
 ```{r}
 state_choropleth(df_change,
                  num_colors = 0,
@@ -169,12 +161,12 @@ state_choropleth(df_change,
 ```
  
  
-##Looking at the get state demographics function 
+###Looking at the get state demographics function 
 ```{r}
 get_state_demographics #
 ```
  
-##Table for per capita income ending in 2015 spanning 5 years
+###Table for per capita income ending in 2015 spanning 5 years
 ```{r}
 get_acs_data("B19301",
              "state",
@@ -182,14 +174,14 @@ get_acs_data("B19301",
              span = 5)
 ```
  
- 
+###plotting acs survey state income 
 ```{r}
 df_income = get_acs_data("B19301", "state")[[1]]
 state_choropleth(df_income)
 ```
 
 
-##same table including margin of error (90% confidence that the true per capita income is between estimated value + or - margin of error)
+###same table including margin of error (90% confidence that the true per capita income is between estimated value + or - margin of error) The ACS survey which is conducted monthly is a sample and thus has a margin of error associated with it.
 ```{r}
 get_acs_data("B19301",
              "state",
@@ -200,14 +192,24 @@ get_acs_data("B19301",
 
 
 
+###US map of counties, shaded by estimated per capita income
+```{r}
+County_Map_df_income <- get_acs_data("B19301", "county")[[1]]
+county_choropleth(County_Map_df_income)
+```
 
+###Map of Michigan counties, shaded by estimated per capita income
+```{r}
+County_Map_df_income <- get_acs_data("B19301", "county")[[1]]
+county_choropleth(County_Map_df_income, state_zoom = "michigan")
+county_choropleth(County_Map_df_income, num_colors = 1, state_zoom = "michigan")
+```
 
-
-
-
-
-
-
+### Choropleth of Michigan, Ohio, Illionois, and Wisconsin. looks the dataframe doesn't need a dedicated state feature in order to filter to specfic states.
+```{r}
+county_choropleth(County_Map_df_income, state_zoom = c("michigan","ohio","illinois","wisconsin","indiana"))
+county_choropleth(County_Map_df_income, num_colors = 1, state_zoom = c("michigan","ohio","illinois","wisconsin","indiana"))
+```
 
 
 
